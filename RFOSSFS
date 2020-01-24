@@ -1,0 +1,18 @@
+#!/bin/bash
+
+current_year=$(date '+%Y')
+
+print_random_friday_for_month() {
+    # This will include 'Fr' as the first array element
+    local fridays=( $(ncal "$1" "$current_year" -h | grep '^Fr') )
+    # Strip first array element
+    fridays=( "${fridays[@]:1}" )
+    friday_num=$((RANDOM % ${#fridays[@]}))
+    printf 'Friday for month of %s: %02d (friday number %d)\n' "$(date -d "$1/01" +%b)" "${fridays[friday_num]}" "$friday_num"
+}
+
+echo "For the year of $current_year:"
+
+for ((i = 1; i < 13; ++i)) do
+    print_random_friday_for_month "$i"
+done
